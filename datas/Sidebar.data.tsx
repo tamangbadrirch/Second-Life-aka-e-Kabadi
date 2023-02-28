@@ -4,9 +4,14 @@ import {
   FaUserAlt,
   FaUserAstronaut,
   FaUserFriends,
+  FaTruckLoading,
 } from "react-icons/fa";
 
 import { BiMoney } from "react-icons/bi";
+import { IoIosNotifications } from "react-icons/Io";
+import { BsCartPlus } from "react-icons/Bs";
+import { MdSpellcheck } from "react-icons/Md";
+
 interface SidebarInterface {
   title: string;
   icon: React.ReactNode;
@@ -20,14 +25,24 @@ const sidebarData: SidebarInterface[] = [
     link: "/dashboard",
   },
   {
-    title: "Register",
-    icon: <FaUserAlt />,
-    link: "/register",
+    title: "Notification",
+    icon: <IoIosNotifications />,
+    link: "/notification",
   },
   {
-    title: "Login",
-    icon: <FaUserAlt />,
-    link: "/login",
+    title: "Requested Order",
+    icon: <BsCartPlus />,
+    link: "/requested",
+  },
+  {
+    title: "Order in Progress",
+    icon: <FaTruckLoading />,
+    link: "/inprogress",
+  },
+  {
+    title: "Completed order",
+    icon: <MdSpellcheck />,
+    link: "/completed",
   },
 ];
 export default sidebarData;

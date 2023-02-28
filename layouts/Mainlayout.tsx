@@ -1,6 +1,10 @@
 //Importing Part
+import sidebarData from "@/datas/Sidebar.data";
 import Head from "next/head"; //For manipulating head part of html page
-import React from "react";
+import Link from "next/link";
+// import { BsList } from "react-icons/bs";
+import { BiUserCircle } from "react-icons/bi";
+import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 
@@ -11,6 +15,7 @@ interface Props {
 }
 
 const Mainlayout = ({ title, children }: Props) => {
+  const [toggle, setToggle] = useState<boolean>(false);
   return (
     <>
       {/* Head Part */}
@@ -20,13 +25,19 @@ const Mainlayout = ({ title, children }: Props) => {
       </Head>
 
       {/* Main Part */}
-      <main>
+      <main className="w-full">
         {/* Caling Sidebar  */}
-        <Sidebar />
+        <Sidebar toggle={toggle} />
 
-        <div className="w-[100%] ml-[12rem] ">
+        <div
+          className={`${
+            !toggle
+              ? "md:ml-[11rem] lg:ml-[16rem] xl:ml-[16.8rem] 2x1:ml-[21rem]"
+              : "ml-[5rem]"
+          }`}
+        >
           {/* Calling NavBar */}
-          <Navbar />
+          <Navbar setToggle={setToggle} toggle={toggle} />
           <div className="pt-16">{children}</div>
         </div>
       </main>
