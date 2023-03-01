@@ -1,7 +1,22 @@
 import Link from "next/link";
 import React from "react";
+import { useForm } from "react-hook-form";
+interface FormInput {
+  userType: string;
 
+  firstName: string;
+
+  lastName: string;
+
+  username: string;
+
+  email: string;
+
+  password: string;
+}
 const Register = () => {
+
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormInput>();
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-blue-500 to-purple-500">
       <div className="bg-white p-8 rounded-lg shadow-md">
