@@ -1,19 +1,18 @@
 import React, { FC } from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
-import { MdEmail } from "react-icons/Md";
-import { useState } from "react";
-import styles from "../styles/input.css";
+import { asyncPost } from "@/Apis/rest.api";
+import { userUrl } from "@/Apis/list.api";
+import { useRouter } from "next/router";
 
 interface SignUpFormProps {
   onSubmit: (data: SignUpFormData) => void;
 }
 
 interface SignUpFormData {
-  usertype: string;
-  firstname: string;
-  lastname: string;
-  username: string;
+  userType: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
   email: string;
   password: string;
   confirmpassword: string;
@@ -21,26 +20,26 @@ interface SignUpFormData {
 
 const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
   const {
-    register, 
+    register,
     handleSubmit,
     setValue,
     watch,
     formState: { errors },
   } = useForm<SignUpFormData>();
 
-  const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmpassword] = useState("");
-
   //  for password & confirm password comparision
-  // const password = watch("password");
-  // const confirmpassword = watch("confirmpassword");
+  const password = watch("password");
+  const confirmpassword = watch("confirmpassword");
+  //for redirecting to login after sucessfull registration
+  const router = useRouter();
 
-  const handleFormSubmit = async (data: SignUpFormData) => {
-    try {
-      await axios.post("/api/users", data);
-      onSubmit(data);
-    } catch (error) {
-      console.log("Error submitting form", error);
+  const handleFormSubmit = async (formdata: SignUpFormData) => {
+    const { data, error } = await asyncPost(userUrl.save, formdata);
+    if (data && !error) {
+      alert("Saved Sucessfully");
+      router.push("/login");
+    } else {
+      alert("Failed! Try again!");
     }
   };
 
@@ -67,7 +66,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
                 Usertype:
               </label>
               <select
-                {...register("usertype", {
+                {...register("userType", {
                   validate: (value) => value != "null",
                 })}
                 className="signup-form label"
@@ -80,7 +79,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
               </select>
             </div>
 
-            {errors.usertype && (
+            {errors.userType && (
               <small className="w-full text-red-600 flex justify-center right-0 top-0">
                 Choose user type
               </small>
@@ -95,13 +94,13 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
               </label>
               <input
                 placeholder="enter first name"
-                {...register("firstname", { required: true })}
+                {...register("firstName", { required: true })}
                 className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
                 type="text"
                 style={{ margin: "10px" }}
               />
             </div>
-            {errors.firstname && (
+            {errors.firstName && (
               <small className="w-full text-red-600 flex justify-center right-0 top-0">
                 This field is required
               </small>
@@ -115,13 +114,34 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
               </label>
               <input
                 placeholder="enter last name"
-                {...register("lastname", { required: true })}
+                {...register("lastName", { required: true })}
                 className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
                 type="text"
                 style={{ margin: "10px" }}
               />
             </div>
-            {errors.lastname && (
+            {errors.lastName && (
+              <small className="w-full text-red-600 flex justify-center right-0 top-0">
+                This field is required
+              </small>
+            )}
+          </div>
+
+          {/* for username */}
+          <div className="mb-4">
+            <div className="">
+              <label htmlFor="username" className="text-gray-700 font-bold">
+                username:
+              </label>
+              <input
+                placeholder="enter username"
+                {...register("userName", { required: true })}
+                className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+                type="text"
+                style={{ margin: "10px" }}
+              />
+            </div>
+            {errors.userName && (
               <small className="w-full text-red-600 flex justify-center right-0 top-0">
                 This field is required
               </small>
@@ -168,7 +188,6 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
                 pattern:
                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
               })}
-              onChange={(e) => setPassword(e.target.value)}
             />
             {errors.password?.type === "required" && (
               <span>This field is required</span>
@@ -192,7 +211,6 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
               type="password"
               style={{ margin: "10px" }}
               {...register("confirmpassword", { required: true })}
-              onChange={(e) => setConfirmpassword(e.target.value)}
             />
             {errors.confirmpassword?.type === "required" && (
               <span>This field is required</span>
