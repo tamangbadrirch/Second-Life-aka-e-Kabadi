@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const login = () => {
+const register = () => {
   return (
     // for heading of form
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-blue-500 to-purple-500">
@@ -68,4 +68,4 @@ const login = () => {
     </div>
   );
 };
-export default login;
+export default register;

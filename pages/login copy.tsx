@@ -18,6 +18,23 @@ const login = () => {
           className="flex flex-col space-y-4"
           style={{ width: "300px", margin: "auto" }}
         >
+          <label htmlFor="firstName" className="text-gray-700 font-medium">
+            First Name *
+          </label>
+          <input
+            type="text"
+            id="firstname"
+            className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+          />
+          <label htmlFor="lastName" className="text-gray-700 font-medium">
+            Last Name *
+          </label>
+          <input
+            type="text"
+            id="lastname"
+            className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+          />
+
           <label htmlFor="userName" className="text-gray-700 font-medium">
             Username *
           </label>
