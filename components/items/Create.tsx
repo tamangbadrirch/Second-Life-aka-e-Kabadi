@@ -6,15 +6,15 @@ import create from "@/pages/admin/category/create";
 const breadCrumb: { title: string; link: string }[] = [
   {
     title: "Home",
-    link: "/items",
+    link: "/admin/items",
   },
   {
     title: "Items",
-    link: "/items",
+    link: "/admin/items",
   },
   {
     title: "Create",
-    link: "/items/create",
+    link: "/admin/items/Create",
   },
 ];
 
@@ -22,7 +22,7 @@ const Create = () => {
   return (
     <Mainlayout>
       <Container breadCrumb={breadCrumb} title="Add Items">
-        <create />
+        <Form />
       </Container>
     </Mainlayout>
   );

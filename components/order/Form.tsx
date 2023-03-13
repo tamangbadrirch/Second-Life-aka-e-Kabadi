@@ -1,5 +1,5 @@
-import { employeeUrl } from "@/apis/list.api";
-import { asyncPost, asyncPut } from "@/apis/rest.api";
+import { employeeUrl, ordersUrl } from "@/Apis/list.api";
+import { asyncPost, asyncPut } from "@/Apis/rest.api";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";

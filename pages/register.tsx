@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { asyncPost } from "@/Apis/rest.api";
 import { userUrl } from "@/Apis/list.api";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface SignUpFormProps {
   onSubmit: (data: SignUpFormData) => void;
@@ -47,7 +48,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
 
   return (
     // <div className="flex bg-red-300 mx-auto p-16 justify-center w-[100%]">
-    <div className="signup-container flex flex-col items-center justify-center h-screen bg-gradient-to-b from-blue-500 to-purple-500">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-500 to-purple-500">
       <div className="bg-white p-8 rounded-lg shadow-md">
         <h1
           className="text-3xl font-bold text-center mb-4 text-blue-400"
@@ -58,149 +59,139 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
         <form
           onSubmit={handleSubmit(handleFormSubmit)}
           action=""
-          className="signup-form flex flex-col space-y-4"
-          style={{ width: "400px", margin: "auto" }}
+          className="flex flex-col space-y-2"
+          style={{ width: "420px", margin: "auto" }}
         >
           {/* for usertype */}
-          <div className="">
-            <div className="signup-form h1">
-              <label htmlFor="" className="signup-form label">
-                Usertype:
-              </label>
-              <select
-                {...register("userType", {
-                  validate: (value) => value != "null",
-                })}
-                className="signup-form label"
-              >
-                <option selected value="{null}">
-                  choose
-                </option>
-                <option value="individual"> Individual</option>
-                <option value="organization"> Organization</option>
-              </select>
-            </div>
-
+          <div className="flex flex-col mb-2">
+            <label htmlFor="userType" className="font-bold mb-2">
+              Usertype:
+            </label>
+            <select
+              {...register("userType", {
+                validate: (value) => value != "null",
+              })}
+              id="userType"
+              className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+            >
+              <option value="null" disabled>
+                Choose
+              </option>
+              <option value="individual">Individual</option>
+              <option value="organization">Organization</option>
+            </select>
             {errors.userType && (
-              <small className="w-full text-red-600 flex justify-center right-0 top-0">
-                Choose user type
-              </small>
+              <small className="text-red-600">{errors.userType.message}</small>
             )}
           </div>
 
-          {/* for first name */}
-          <div className="grid grid-cols-3 gap-8">
-            <div className="">
-              <label htmlFor="firstname" className="col-span-1 ">
+          {/* for name fields */}
+          <div className="flex space-x-4 mt-1">
+            <div className="flex flex-col mb-2">
+              <label htmlFor="firstName" className="font-bold mb-1">
                 First Name:
               </label>
               <input
-                placeholder="enter first name"
-                {...register("firstName", { required: true })}
+                placeholder="Enter first name"
+                {...register("firstName", {
+                  required: "This field is required",
+                })}
+                id="firstName"
                 className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
                 type="text"
-                style={{ margin: "10px" }}
               />
+              {errors.firstName && (
+                <small className="text-red-600">
+                  {errors.firstName.message}
+                </small>
+              )}
             </div>
-            {errors.firstName && (
-              <small className="w-full text-red-600 flex justify-center right-0 top-0">
-                This field is required
-              </small>
-            )}
-          </div>
-          {/* for lastname */}
-          <div className="mb-4">
-            <div className="">
-              <label htmlFor="" className="text-gray-700 font-bold">
+
+            <div className="flex flex-col ml-4 mt-1">
+              <label htmlFor="lastName" className="font-bold mb-1 mt">
                 Last Name:
               </label>
               <input
-                placeholder="enter last name"
-                {...register("lastName", { required: true })}
+                placeholder="Enter last name"
+                {...register("lastName", {
+                  required: "This field is required",
+                })}
+                id="lastName"
                 className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
                 type="text"
-                style={{ margin: "10px" }}
               />
+              {errors.lastName && (
+                <small className="text-red-600">
+                  {errors.lastName.message}
+                </small>
+              )}
             </div>
-            {errors.lastName && (
-              <small className="w-full text-red-600 flex justify-center right-0 top-0">
-                This field is required
-              </small>
-            )}
           </div>
-
           {/* for phone  */}
-          <div className="">
-            <div className="">
-              <label htmlFor="phone" className="text-gray-700 font-bold">
+          <div className="flex space-x-4 mt-1">
+            <div className="flex flex-col">
+              <label htmlFor="phone" className="text-gray-700 font-bold mb-1">
                 Phone:
               </label>
               <input
-                placeholder="enter phone no."
+                placeholder="Enter phone no."
                 {...register("phone", { required: true })}
                 className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
                 type="text"
-                style={{ margin: "10px" }}
+                // style={{ margin: "10px" }}
               />
+              {errors.phone && (
+                <small className="w-full text-red-600 flex justify-center right-0 top-0">
+                  This field is required
+                </small>
+              )}
             </div>
-            {errors.phone && (
-              <small className="w-full text-red-600 flex justify-center right-0 top-0">
-                This field is required
-              </small>
-            )}
-          </div>
 
-          {/* for address  */}
-          {/* for phone  */}
-          <div className="">
-            <div className="">
-              <label htmlFor="address" className="text-gray-700 font-bold">
+            {/* for address  */}
+            <div className="flex flex-col ml-4 mb-2">
+              <label htmlFor="address" className="text-gray-700 font-bold mb-1">
                 Address:
               </label>
               <input
-                placeholder="enter your current address"
+                placeholder="enter current address"
                 {...register("address", { required: true })}
                 className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
                 type="text"
-                style={{ margin: "10px" }}
               />
+              {errors.address && (
+                <small className="w-full text-red-600 flex justify-center right-0 top-0">
+                  This field is required
+                </small>
+              )}
             </div>
-            {errors.address && (
-              <small className="w-full text-red-600 flex justify-center right-0 top-0">
-                This field is required
-              </small>
-            )}
           </div>
 
           {/* for username */}
-          <div className="mb-4">
-            <div className="">
+          <div className="flex space-x-4 mt-1">
+            <div className="flex flex-col mb-2">
               <label htmlFor="username" className="text-gray-700 font-bold">
                 Username:
               </label>
               <input
-                placeholder="enter username"
+                placeholder="Enter username"
                 {...register("userName", { required: true })}
                 className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
                 type="text"
-                style={{ margin: "10px" }}
               />
+              {errors.userName && (
+                <small className="w-full text-red-600 flex justify-center right-0 top-0">
+                  This field is required
+                </small>
+              )}
             </div>
-            {errors.userName && (
-              <small className="w-full text-red-600 flex justify-center right-0 top-0">
-                This field is required
-              </small>
-            )}
-          </div>
 
-          {/* for email */}
-          <div className="">
-            <div className="">
-              <label htmlFor="email" className="">
+            {/* for email */}
+            <div className="flex flex-col ml-4 mb-2">
+              <label htmlFor="email" className="font-bold mb-1">
                 Email:
               </label>
               <input
-                placeholder="enter email"
+                placeholder="Enter email"
                 {...register("email", {
                   required: { value: true, message: "email is required" },
                   pattern: {
@@ -210,67 +201,109 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
                 })}
                 className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
                 type="email"
-                style={{ margin: "10px" }}
               />
+              {errors.email && (
+                <small className="w-full text-red-600 flex justify-center right-0 top-0">
+                  {errors?.email?.message}
+                </small>
+              )}
             </div>
-            {errors.email && (
-              <small className="w-full text-red-600 flex justify-center right-0 top-0">
-                {errors?.email?.message}
-              </small>
-            )}
           </div>
 
-          <label>
-            Password:
+          {/* for password */}
+          <div className="flex space-x-4 mt-1">
+            <div className="flex flex-col">
+              <label htmlFor="password" className="font-bold mb-1">
+                Password:
+              </label>
+              <input
+                className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+                placeholder="Enter password"
+                type="password"
+                {...register("password", {
+                  required: true,
+                  minLength: 8,
+                  pattern:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                })}
+              />
+              {errors.password?.type === "required" && (
+                <span>This field is required</span>
+              )}
+              {errors.password?.type === "minLength" && (
+                <span>Password must be at least 8 characters</span>
+              )}
+              {errors.password?.type === "pattern" && (
+                <span>
+                  Password should have at least 8 characters and include a
+                  mixture of uppercase and lowercase letters, numbers, and
+                  special characters
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col ml-4">
+              <label htmlFor="confirmpassword" className="font-bold mb-1">
+                Confirm Password:
+              </label>
+              <input
+                className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+                placeholder="Enter confirm password"
+                type="password"
+                {...register("confirmpassword", { required: true })}
+              />
+              {errors.confirmpassword?.type === "required" && (
+                <span>This field is required</span>
+              )}
+              {password !== confirmpassword && (
+                <span>Passwords do not match</span>
+              )}
+            </div>
+          </div>
+
+          {/* for agreement while registering */}
+          <div className="flex items-center mt-2">
             <input
-              className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
-              placeholder="enter password"
-              type="password"
-              style={{ margin: "10px" }}
-              {...register("password", {
-                required: true,
-                minLength: 8,
-                pattern:
-                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-              })}
+              id="terms-checkbox"
+              type="checkbox"
+              className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
             />
-            {errors.password?.type === "required" && (
-              <span>This field is required</span>
-            )}
-            {errors.password?.type === "minLength" && (
-              <span>Password must be at least 8 characters</span>
-            )}
-            {errors.password?.type === "pattern" && (
-              <span>
-                Password should have at least 8 characters and include a mixture
-                of uppercase and lowercase letters, numbers, and special
-                characters
-              </span>
-            )}
-          </label>
-          <label>
-            Confirm Password:
-            <input
-              className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
-              placeholder="enter confirm password"
-              type="password"
-              style={{ margin: "10px" }}
-              {...register("confirmpassword", { required: true })}
-            />
-            {errors.confirmpassword?.type === "required" && (
-              <span>This field is required</span>
-            )}
-            {password !== confirmpassword && (
-              <span>Passwords do not match</span>
-            )}
-          </label>
-          <div className="signup-form button signup-form button:hover flex justify-end ">
+            <label
+              htmlFor="terms-checkbox"
+              className="ml-2 block text-sm leading-5 text-gray-900"
+            >
+              I agree to the{" "}
+              <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                Terms &amp; Conditions
+              </a>{" "}
+              and the{" "}
+              <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                Standard Disclosure Terms
+              </a>
+              .
+            </label>
+          </div>
+
+          {/* for button */}
+
+          <div
+            className="flex mt-1"
+            style={{ justifyContent: "flex-end", paddingRight: "10px" }}
+          >
             <button
-              className="bg-blue-800 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-600 transition-colors duration-300"
               type="submit"
+              className="bg-blue-800 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-600 transition-colors duration-300"
             >
               Sign Up
             </button>
+          </div>
+
+          {/* for back to login */}
+          <div className="text-center mt-1 flex justify-end font-bold">
+            <Link href="/login" passHref>
+              <button className="text-blue-500 hover:text-red-600 hover:underline border-none bg-transparent py-2 px-4 rounded-md transition-colors duration-300">
+                Go back to login
+              </button>
+            </Link>
           </div>
         </form>
       </div>

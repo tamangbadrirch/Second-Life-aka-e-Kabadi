@@ -21,4 +21,10 @@ const category = {
   delete: "/category",
   
 };
-export { employee as employeeUrl, user as userUrl, items as itemsUrl, category as categoryUrl };
+const orders = {
+  save: "/orders",
+  get: "/orders",
+  delete: "/orders",
+  
+};
+export { orders as ordersUrl, employee as employeeUrl, user as userUrl, items as itemsUrl, category as categoryUrl };

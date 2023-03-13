@@ -74,7 +74,7 @@ const Form = ({ editData }: FormProps) => {
           </div>
           {errors?.categoryName && (
             <small className="w-full text-red-600 flex justify-center right-0 top-0">
-              name required
+              Name is required
             </small>
           )}
         </div>

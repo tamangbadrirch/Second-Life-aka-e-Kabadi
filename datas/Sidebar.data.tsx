@@ -37,6 +37,11 @@ const sidebarData: SidebarInterface[] = [
     link: "/requested",
   },
   {
+    title: "Place Order",
+    icon: <BsCartPlus />,
+    link: "user/order",
+  },
+  {
     title: "Order in Progress",
     icon: <FaTruckLoading />,
     link: "/inprogress",
