@@ -8,11 +8,11 @@ import {
 } from "react-icons/fa";
 
 import { BiMoney } from "react-icons/bi";
-import { IoIosNotifications } from "react-icons/Io";
-import { BsCartPlus } from "react-icons/Bs";
-import { GiTemplarEye } from "react-icons/Gi";
+import { IoIosNotifications } from "react-icons/io";
+import { BsCartPlus } from "react-icons/bs";
+import { GiTemplarEye } from "react-icons/gi";
 import { BiCategory } from "react-icons/bi";
-import { MdSpellcheck } from "react-icons/Md";
+import { MdSpellcheck } from "react-icons/md";
 
 interface SidebarInterface {
   title: string;
@@ -24,7 +24,7 @@ const sidebarData: SidebarInterface[] = [
   {
     title: "Dashboard",
     icon: <FaDashcube />,
-    link: "/dashboard",
+    link: "/admin",
   },
   {
     title: "Notification",

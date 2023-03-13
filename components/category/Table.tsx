@@ -66,7 +66,7 @@ const Table = () => {
             className="border border-gray-400 rounded-md outline-none p-1.5"
           />
         </div>
-        <Link href={"/category/create"}>
+        <Link href={"/admin/category/create"}>
           <span className="bg-purple-500 text-black hover:bg-purple-800 rounded-md px-3 py-2">
             Add Category
           </span>

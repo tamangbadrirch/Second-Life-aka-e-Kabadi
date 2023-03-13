@@ -32,7 +32,7 @@ const Mainlayout = ({ title, children }: Props) => {
         <div
           className={`${
             !toggle
-              ? "md:ml-[11rem] lg:ml-[16rem] xl:ml-[16.8rem] 2x1:ml-[21rem]"
+              ? "md:ml-[11rem] lg:ml-[16rem] xl:ml-[17rem] 2x1:ml-[21rem]"
               : "ml-[5rem]"
           }`}
         >
