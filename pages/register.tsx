@@ -12,8 +12,10 @@ interface SignUpFormData {
   userType: string;
   firstName: string;
   lastName: string;
-  userName: string;
   email: string;
+  phone: string;
+  address: string;
+  userName: string;
   password: string;
   confirmpassword: string;
 }
@@ -127,11 +129,54 @@ const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
             )}
           </div>
 
+          {/* for phone  */}
+          <div className="">
+            <div className="">
+              <label htmlFor="phone" className="text-gray-700 font-bold">
+                Phone:
+              </label>
+              <input
+                placeholder="enter phone no."
+                {...register("phone", { required: true })}
+                className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+                type="text"
+                style={{ margin: "10px" }}
+              />
+            </div>
+            {errors.phone && (
+              <small className="w-full text-red-600 flex justify-center right-0 top-0">
+                This field is required
+              </small>
+            )}
+          </div>
+
+          {/* for address  */}
+          {/* for phone  */}
+          <div className="">
+            <div className="">
+              <label htmlFor="address" className="text-gray-700 font-bold">
+                Address:
+              </label>
+              <input
+                placeholder="enter your current address"
+                {...register("address", { required: true })}
+                className="border border-gray-400 p-2 rounded-lg focus:outline-none focus:border-blue-500"
+                type="text"
+                style={{ margin: "10px" }}
+              />
+            </div>
+            {errors.address && (
+              <small className="w-full text-red-600 flex justify-center right-0 top-0">
+                This field is required
+              </small>
+            )}
+          </div>
+
           {/* for username */}
           <div className="mb-4">
             <div className="">
               <label htmlFor="username" className="text-gray-700 font-bold">
-                username:
+                Username:
               </label>
               <input
                 placeholder="enter username"

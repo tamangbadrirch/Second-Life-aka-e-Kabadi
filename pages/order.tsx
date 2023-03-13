@@ -1,176 +1,196 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
-import axios from "axios";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+// import DatePicker from 'react-datepicker';
+// import 'react-datepicker/dist/react-datepicker.css';
+// import QRCode from 'qrcode.react';
+// import axios from 'axios';
 
-export default function OrderForm() {
-  const { register, handleSubmit, errors } = useForm();
-  const router = useRouter();
+interface OrderFormProps {
+  onSubmit: (data: OrderFormData) => void;
+}
 
-  const onSubmit = (data) => {
-    axios.post("/api/orders", data).then((response) => {
-      console.log(response);
-      router.push("/dashboard");
-    });
+interface OrderFormData {
+  userType: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  userName: string;
+  password: string;
+  confirmpassword: string;
+}
+
+const SignUpForm: FC<SignUpFormProps> = ({ onSubmit }) => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<SignUpFormData>();
+
+  const onSubmit = async (data) => {
+    try {
+      const order = {
+        category: data.category,
+        item: data.item,
+        pickupDate: selectedDate,
+        pickupTime: selectedTime,
+        paymentMethod,
+        bankDetails
+      };
+      await axios.post('/api/orders', order);
+      // Redirect to dashboard on successful submission
+      window.location.href = '/dashboard';
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const onCancelClick = () => {
-    router.push("/dashboard");
+  const handlePaymentMethodChange = (event) => {
+    setPaymentMethod(event.target.value);
   };
 
-  return (
-    <div className="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto bg-white rounded-md overflow-hidden md:max-w-lg">
-        <div className="md:flex">
-          <div className="w-full p-4">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4">
-                <label
-                  htmlFor="category"
-                  className="block text-gray-700 font-bold mb-2"
-                >
-                  Categories
-                </label>
-                <select
-                  id="category"
-                  name="category"
-                  ref={register({ required: true })}
-                  className="appearance-none bg-white border border-gray-400 hover:border-gray-500 rounded-md py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                >
-                  <option value="">--Select--</option>
-                  <option value="Paper">Paper</option>
-                  <option value="Iron">Iron</option>
-                  <option value="Other">Other</option>
-                </select>
-                {errors.category && (
-                  <p className="text-red-500 text-xs italic">
-                    Category is required
-                  </p>
-                )}
-              </div>
+  const handleBankDetailsChange = (event) => {
+    const { name, value } = event.target;
+    setBankDetails((prevBankDetails) => ({
+      ...prevBankDetails,
+      [name]: value
+    }));
+  };
+return (
+   <div className="bg-gradient-to-r from-blue-500 to-purple-500 min-h-screen flex flex-col items-center justify-center">
+      <h1 className="text-white text-4xl mb-8">Second Life</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
+        <div className="mb-4">
+          <label htmlFor="category" className="block text-gray-700 font-bold mb-2">Category:</label>
+          <select {...register('category')} id="category" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="paper">Paper</option>
+            <option value="iron">Iron</option>
+            <option value="others">Others</option>
+          </select>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="item" className="block text-gray-700 font-bold mb-2">Item:</label>
+          <select {...register('item')} id="item" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            {['Waste Paper', 'A4 Papers & Copies', 'Cartoon Papers', 'Iron pieces', 'Others'].map((item) => (
+              <option key={item} value={item}>{item}</option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="pickupDate" className="block text-gray-700 font-bold mb-2">Pickup Date:</label>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            dateFormat="yyyy-MM-dd"
+            minDate={new Date()}
+            className="shadow appearance-none border roundedw-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            <input
+            type="time"
+            {...register('pickupTime')}
+            id="pickupTime"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mt-3"
+            onChange={(event) => setSelectedTime(event.target.value)}
+            />
+            </div>
+            <div className="mb-4">
+            <label htmlFor="paymentMethod" className="block text-gray-700 font-bold mb-2">Payment Method:</label>
+            <div className="flex">
+            <label htmlFor="qr" className="flex items-center mr-4">
+            <input
+            type="radio"
+            {...register('paymentMethod')}
+            value="QR"
+            checked={paymentMethod === 'QR'}
+            onChange={handlePaymentMethodChange}
+            id="qr"
+            />
+            <span className="ml-2">QR</span>
+            </label>
+            <label htmlFor="bankTransfer" className="flex items-center mr-4">
+            <input
+            type="radio"
+            {...register('paymentMethod')}
+            value="BankTransfer"
+            checked={paymentMethod === 'BankTransfer'}
+            onChange={handlePaymentMethodChange}
+            id="bankTransfer"
+            />
+            <span className="ml-2">Bank Transfer</span>
+            </label>
+            <label htmlFor="cash" className="flex items-center mr-4">
+            <input
+            type="radio"
+            {...register('paymentMethod')}
+            value="Cash"
+            checked={paymentMethod === 'Cash'}
+            onChange={handlePaymentMethodChange}
+            id="cash"
+            />
+            <span className="ml-2">Cash</span>
+            </label>
+            <label htmlFor="other" className="flex items-center mr-4">
+            <input
+            type="radio"
+            {...register('paymentMethod')}
+            value="Other"
+            checked={paymentMethod === 'Other'}
+            onChange={handlePaymentMethodChange}
+            id="other"
+            />
+            <span className="ml-2">Other</span>
+            </label>
+            </div>
+            {paymentMethod === 'BankTransfer' && (
+            <div className="mt-4">
+            <label htmlFor="bankName" className="block text-gray-700 font-bold mb-2">Bank Name:</label>
+            <input
+            type="text"
+            {...register('bankName')}
+            id="bankName"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            onChange={handleBankDetailsChange}
+            />
+            <label htmlFor="branch" className="block text-gray-700 font-bold mb-2 mt-3">Branch:</label>
+            <input
+            type="text"
+            {...register('branch')}
+            id="branch"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            onChange={handleBankDetailsChange}
+            />
+            <label htmlFor="accountNo" className="block text-gray-700 font-bold mb-2 mt-3">Account No:</label>
+            <input
+            type="text"
+            {...register('accountNo')}
+            id="accountNo"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            onChange={handleBankDetailsChange}
+            />
+<label htmlFor="accountName" className="blocktext-gray-700 font-bold mb-2 mt-3">Account Name:</label>
+<input
+type="text"
+{...register('accountName')}
+id="accountName"
+className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+onChange={handleBankDetailsChange}
+/>
 
-
-              <div className="mb-4">
-                <label
-                  htmlFor="item"
-                  className="block text-gray-700 font-bold mb-2"
-                >
-                  Items
-                </label>
-                <select
-                  id="item"
-                  name="item"
-                  ref={register({ required: true })}
-                  className="appearance-none bg-white border border-gray-400 hover:border-gray-500 rounded-md py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                >
-                  <option value="">--Select--</option>
-                  <optgroup label="Paper">
-                    <option value="Normal A4 Papers">Normal A4 Papers</option>
-                    <option value="Books &amp; Notes">Books &amp; Notes</option>
-                    <option value="Thick Cartoon Paper">
-                      Thick Cartoon Paper
-                    </option>
-                    <option value="Paper pieces of factory waste">
-                      Paper pieces of factory waste
-                    </option>
-                  </optgroup>
-                  <optgroup label="Iron">
-                    <option value="Iron scrap">Iron scrap</option>
-                    <option value="Iron furniture">Iron furniture</option>
-                  </optgroup>
-                  <optgroup label="Other">
-                    <option value="Plastic waste">Plastic waste</option>
-                    <option value="Electronic waste">
-                      Electronic waste
-                    </option>
-                    <option value="Glass waste">Glass waste</option>
-                    <option value="Other factory waste">
-                      Other factory waste
-                    </option>
-                  </optgroup>
-                </select>
-                {errors.item && (
-                  <p className="text-red-500 text-xs italic">
-                    Item is required
-                  </p>
-                )}
-              </div>
-
- <div className="mb-4">
-  <label htmlFor="quantity" className="block text-gray-700 font-bold mb-2">
-    Quantity
-  </label>
-  <input
-    type="number"
-    id="quantity"
-    name="quantity"
-    ref={register({ required: true, min: 1 })}
-    className="appearance-none bg-white border border-gray-400 hover:border-gray-500 rounded-md py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-  />
-  {errors.quantity && (
-    <p className="text-red-500 text-xs italic">Quantity is required</p>
-  )}
 </div>
-
-<div className="mb-4">
-  <label htmlFor="contactName" className="block text-gray-700 font-bold mb-2">
-    Contact Name
-  </label>
-  <input
-    type="text"
-    id="contactName"
-    name="contactName"
-    ref={register({ required: true })}
-    className="appearance-none bg-white border border-gray-400 hover:border-gray-500 rounded-md py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-  />
-  {errors.contactName && (
-    <p className="text-red-500 text-xs italic">Contact name is required</p>
-  )}
+)}
 </div>
-
-<div className="mb-4">
-  <label htmlFor="contactNumber" className="block text-gray-700 font-bold mb-2">
-    Contact Number
-  </label>
-  <input
-    type="text"
-    id="contactNumber"
-    name="contactNumber"
-    ref={register({ required: true })}
-    className="appearance-none bg-white border border-gray-400 hover:border-gray-500 rounded-md py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-  />
-  {errors.contactNumber && (
-    <p className="text-red-500 text-xs italic">Contact number is required</p>
-  )}
 </div>
-
-<div className="mb-4">
-  <label htmlFor="address" className="block text-gray-700 font-bold mb-2">
-    Address
-  </label>
-  <textarea
-    id="address"
-    name="address"
-    ref={register({ required: true })}
-    className="appearance-none bg-white border border-gray-400 hover:border-gray-500 rounded-md py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-  ></textarea>
-  {errors.address && (
-    <p className="text-red-500 text-xs italic">Address is required</p>
-  )}
+<div className="flex justify-center mt-8">
+<button type="button" className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={handleCancel}>Cancel</button>
+<button type="submit" className="bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-orange-500 text-white font-bold py-2 px-4 rounded ml-4">{loading ? 'Loading...' : 'Submit Order'}</button>
 </div>
-
-<div className="mt-6">
-  <button
-    type="submit"
-    className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
-  >
-    Submit
-  </button>
-</div>
-
 </form>
 </div>
 </div>
-</div> 
+</div>
 );
-}
+};
+export default SecondLifeOrderForm;

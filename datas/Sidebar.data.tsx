@@ -10,6 +10,8 @@ import {
 import { BiMoney } from "react-icons/bi";
 import { IoIosNotifications } from "react-icons/Io";
 import { BsCartPlus } from "react-icons/Bs";
+import { GiTemplarEye } from "react-icons/Gi";
+import { BiCategory } from "react-icons/bi";
 import { MdSpellcheck } from "react-icons/Md";
 
 interface SidebarInterface {
@@ -43,6 +45,16 @@ const sidebarData: SidebarInterface[] = [
     title: "Completed order",
     icon: <MdSpellcheck />,
     link: "/completed",
+  },
+  {
+    title: "Category",
+    icon: <BiCategory />,
+    link: "/admin/category",
+  },
+  {
+    title: "Items",
+    icon: <GiTemplarEye />,
+    link: "/admin/items",
   },
 ];
 export default sidebarData;
