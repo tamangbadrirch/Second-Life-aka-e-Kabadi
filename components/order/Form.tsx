@@ -44,7 +44,7 @@ const Form = ({ editData }: FormProps) => {
       }
     } else {
       //create
-      const { data, error } = await asyncPost(ordersUrl.post, payload);
+      const { data, error } = await asyncPost(ordersUrl.save, payload);
       if (data && !error) {
         alert("Saved Successfully");
         router.push("/orders");

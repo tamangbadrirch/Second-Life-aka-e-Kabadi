@@ -97,7 +97,7 @@ const Table = () => {
                     <td className="p-3">{data.phone}</td>
                     <td className="p-3">{data.age}</td> */}
                     <td className="p-3 flex gap-2 justify-center">
-                      <Link href={`/employee/${data.id}`}>
+                      <Link href={`/items/${data.id}`}>
                         <button className="outline-none bg-green-600  px-2 py-0.5 rounded-md text-sm  text-white ">
                           Edit
                         </button>

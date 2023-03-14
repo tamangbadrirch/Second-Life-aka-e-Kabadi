@@ -64,7 +64,7 @@ const Table = () => {
             className="border border-gray-400 rounded-md outline-none p-1.5"
           />
         </div>
-        <Link href={"/orders/create"}>
+        <Link href={"user/order/create"}>
           <span className="bg-purple-500 text-black hover:bg-purple-800 rounded-md px-3 py-2">
             Place Orders
           </span>
@@ -101,7 +101,7 @@ const Table = () => {
                     <td className="p-3">{data.phone}</td>
                     <td className="p-3">{data.age}</td> */}
                     <td className="p-3 flex gap-2 justify-center">
-                      <Link href={`/order/create/${data.id}`}>
+                      <Link href={`/user/order/create/${data.id}`}>
                         <button className="outline-none bg-green-600  px-2 py-0.5 rounded-md text-sm  text-white ">
                           Edit
                         </button>

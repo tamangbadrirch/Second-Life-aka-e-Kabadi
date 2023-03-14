@@ -25,6 +25,7 @@ const orders = {
   save: "/orders",
   get: "/orders",
   delete: "/orders",
+  put: "/orders",
   
 };
 export { orders as ordersUrl, employee as employeeUrl, user as userUrl, items as itemsUrl, category as categoryUrl };
