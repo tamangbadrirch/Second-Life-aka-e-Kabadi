@@ -64,7 +64,8 @@ const Table = () => {
             className="border border-gray-400 rounded-md outline-none p-1.5"
           />
         </div>
-        <Link href={"user/order/create"}>
+        {/* same problem here */}
+        <Link href={"/user/order/create"}>
           <span className="bg-purple-500 text-black hover:bg-purple-800 rounded-md px-3 py-2">
             Place Orders
           </span>

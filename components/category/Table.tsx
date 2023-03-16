@@ -42,7 +42,7 @@ const Table = () => {
     if (value) {
       setFilteredCategorylist(
         categorylist.filter(
-          (f) => f.categoryName?.toString().includes(value)
+          (f) => f.category?.toString().includes(value)
           // ||
           // f.address?.toString().includes(value)
         )
@@ -79,6 +79,7 @@ const Table = () => {
             <tr className="">
               <th className="p-3">Id</th>
               <th className="p-3">categoryName</th>
+              <th className="p-3">Action</th>
               {/* <th className="p-3">Address</th>
               <th className="p-3">Phone</th>
               <th className="p-3">Age</th>
@@ -91,7 +92,7 @@ const Table = () => {
                 return (
                   <tr className="hover:bg-gray-200  p-3 text-center">
                     <td className="p-3 ">{i + 1}</td>
-                    <td className="p-3">{data.categoryName}</td>
+                    <td className="p-3">{data.category}</td>
                     {/* <td className="p-3">{data.address}</td>
                     <td className="p-3">{data.phone}</td>
                     <td className="p-3">{data.age}</td> */}
@@ -104,7 +105,9 @@ const Table = () => {
                       <button
                         onClick={() => deleteCategory(data.id)}
                         className="outline-none bg-red-600  px-2 py-0.5 rounded-md text-sm  text-white "
-                      ></button>
+                      >
+                        dlt
+                      </button>
                     </td>
                   </tr>
                 );

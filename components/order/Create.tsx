@@ -12,7 +12,7 @@ const breadCrumb: { title: string; link: string }[] = [
   },
   {
     title: "Orders",
-    link: "/order",
+    link: "/user/order",
   },
   {
     title: "Create",

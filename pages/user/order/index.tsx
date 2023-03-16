@@ -16,11 +16,11 @@ export default index;
 const breadCrumb: { title: string; link: string }[] = [
   {
     title: "Home",
-    link: "/order",
+    link: "#",
   },
   {
     title: "Order",
-    link: "#",
+    link: "/user/order",
   },
 ];
 

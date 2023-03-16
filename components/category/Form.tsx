@@ -10,7 +10,7 @@ interface FormProps {
 }
 export interface Category {
   id: number;
-  categoryName: string;
+  category: string;
 }
 const Form = ({ editData }: FormProps) => {
   const {
@@ -42,7 +42,7 @@ const Form = ({ editData }: FormProps) => {
       const { data, error } = await asyncPost(categoryUrl.save, payload);
       if (data && !error) {
         alert("saved success");
-        router.push("/category");
+        router.push("/admin/category");
       }
     }
   };
@@ -50,7 +50,7 @@ const Form = ({ editData }: FormProps) => {
   useEffect(() => {
     if (editData) {
       setValue("id", editData?.id);
-      setValue("categoryName", editData?.categoryName);
+      setValue("category", editData?.category);
     }
   }, [editData]);
   return (
@@ -67,12 +67,12 @@ const Form = ({ editData }: FormProps) => {
             </label>
             <input
               placeholder=" Enter Category Name:"
-              {...register("categoryName", { required: true })}
+              {...register("category", { required: true })}
               className="outline-none px-2  border-gray-400 border py-1.5"
               type="text"
             />
           </div>
-          {errors?.categoryName && (
+          {errors?.category && (
             <small className="w-full text-red-600 flex justify-center right-0 top-0">
               Name is required
             </small>

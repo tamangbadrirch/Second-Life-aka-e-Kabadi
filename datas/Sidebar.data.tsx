@@ -20,6 +20,8 @@ interface SidebarInterface {
   link: string;
 }
 
+//link should be start with /
+
 const sidebarData: SidebarInterface[] = [
   {
     title: "Dashboard",
@@ -39,17 +41,17 @@ const sidebarData: SidebarInterface[] = [
   {
     title: "Place Order",
     icon: <BsCartPlus />,
-    link: "user/order",
+    link: "/user/order",
   },
   {
     title: "Order in Progress",
     icon: <FaTruckLoading />,
-    link: "/inprogress",
+    link: "#",
   },
   {
     title: "Completed order",
     icon: <MdSpellcheck />,
-    link: "/completed",
+    link: "#",
   },
   {
     title: "Category",
