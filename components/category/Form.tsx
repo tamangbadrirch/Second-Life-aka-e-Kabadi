@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+//There won't be category for userside
+
 interface FormProps {
   editData?: Category;
 }

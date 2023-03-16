@@ -26,23 +26,24 @@ const sidebarData: SidebarInterface[] = [
   {
     title: "Dashboard",
     icon: <FaDashcube />,
-    link: "/admin",
-  },
-  {
-    title: "Notification",
-    icon: <IoIosNotifications />,
-    link: "/notification",
-  },
-  {
-    title: "Requested Order",
-    icon: <BsCartPlus />,
-    link: "/requested",
+    link: "/dashboard",
   },
   {
     title: "Place Order",
     icon: <BsCartPlus />,
     link: "/user/order",
   },
+  // {
+  //   title: "Notification",
+  //   icon: <IoIosNotifications />,  //we will show notifications from navbar at right
+  //   link: "/user/notification",
+  // },
+  {
+    title: "Requested Order",
+    icon: <BsCartPlus />,
+    link: "#",
+  },
+
   {
     title: "Order in Progress",
     icon: <FaTruckLoading />,
@@ -62,6 +63,11 @@ const sidebarData: SidebarInterface[] = [
     title: "Items",
     icon: <GiTemplarEye />,
     link: "/admin/items",
+  },
+  {
+    title: "Payments",
+    icon: <GiTemplarEye />,
+    link: "/payment",
   },
 ];
 export default sidebarData;

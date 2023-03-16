@@ -72,7 +72,7 @@ const Form = ({ editData }: FormProps) => {
       >
         <div className=" relative items-center">
           <div className="flex gap-2">
-            <label htmlFor="" className="text-xl w-[30%]">
+            <label htmlFor="" className="text-xl w-[40%]">
               Category:
             </label>
             <input
@@ -136,7 +136,7 @@ const Form = ({ editData }: FormProps) => {
         <div className="">
           <div className="flex gap-2 ">
             <label htmlFor="" className="text-xl w-[30%]">
-              Pickup Location:
+              Pickup Time:
             </label>
             <input
               placeholder=" Choose Suitable Pickup Time"

@@ -8,7 +8,7 @@ import Form from "./Form";
 const breadCrumb: { title: string; link: string }[] = [
   {
     title: "Home",
-    link: "/admin/category",
+    link: "#",
   },
   {
     title: "Category",
