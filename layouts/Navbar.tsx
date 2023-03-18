@@ -27,15 +27,10 @@ export default function Navbar({ toggle, setToggle }: Props) {
           <BsList size={25} />
         </span>
       </div>
-
       <div className="flex gap-3 items-center">
-        <span>Notification</span>
         <span>
           <IoIosNotifications size={25} />
         </span>
-      </div>
-
-      <div className="flex gap-3 item-center">
         <span>Badri</span>
         <span>
           <BiUserCircle size={25} />

@@ -13,11 +13,11 @@ const breadCrumb: { title: string; link: string }[] = [
   },
   {
     title: "Category",
-    link: "/category",
+    link: "#",
   },
   {
     title: "Update",
-    link: "/category",
+    link: "/admin/category",
   },
 ];
 const Update = () => {
@@ -26,9 +26,10 @@ const Update = () => {
 
   const fetchCategory = async () => {
     const id = router.query.id; //id from url
+    // alert(id);
     const { data, error } = await asyncGet(categoryUrl.get + "/" + id);
     if (data && !error) {
-      setCategory(data);
+      setCategory(data?.data);
     }
   };
 

@@ -2,7 +2,7 @@ import { employeeUrl, ordersUrl } from "@/Apis/list.api";
 import { asyncPost, asyncPut } from "@/Apis/rest.api";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface FormProps {
@@ -12,6 +12,8 @@ export interface Orders {
   id: number;
   category: string;
   items: string;
+  qty: number;
+  unit: string;
   pickupDate: string;
   pickupTime: string;
   pickupLocation: string;
@@ -25,6 +27,7 @@ const Form = ({ editData }: FormProps) => {
     formState: { errors },
   } = useForm<Orders>();
   const router = useRouter();
+  const [categorylist, addcategorylist] = useState([]);
   //function that is call after submit
   const saveOrders = async (value: Orders) => {
     //api call
@@ -57,6 +60,8 @@ const Form = ({ editData }: FormProps) => {
       setValue("id", editData?.id);
       setValue("category", editData?.category);
       setValue("items", editData?.items);
+      setValue("qty", editData?.qty);
+      setValue("unit", editData?.unit);
       setValue("pickupDate", editData?.pickupDate);
       setValue("pickupTime", editData?.pickupTime);
       setValue("pickupLocation", editData?.pickupLocation);
@@ -64,11 +69,11 @@ const Form = ({ editData }: FormProps) => {
     }
   }, [editData]);
   return (
-    <div className="flex  bg-white mx-auto p-16 justify-center  w-[100%]">
+    <div className="flex  bg-white mx-auto p-12 justify-center  w-[100%]">
       <form
         onSubmit={handleSubmit(saveOrders)}
         action=""
-        className="flex-col flex gap-6"
+        className="flex-col flex px-28 gap-y-5 w-full justify-center "
       >
         <div className=" relative items-center">
           <div className="flex gap-2">
@@ -78,7 +83,7 @@ const Form = ({ editData }: FormProps) => {
             <input
               placeholder=" Enter Category"
               {...register("category", { required: true })}
-              className="outline-none px-2  border-gray-400 border py-1.5"
+              className="outline-none px-2  border-gray-400 border py-1.5 w-[60%]"
               type="text"
             />
           </div>
@@ -88,9 +93,10 @@ const Form = ({ editData }: FormProps) => {
             </small>
           )}
         </div>
+
         <div className="">
           <div className="flex gap-2 ">
-            <label htmlFor="" className="text-xl w-[30%]">
+            <label htmlFor="" className="text-xl w-[40%]">
               Items:
             </label>
             <input
@@ -102,7 +108,7 @@ const Form = ({ editData }: FormProps) => {
                   message: "items must be less than 20 character",
                 },
               })}
-              className="outline-none px-2  border-gray-400 border py-1.5"
+              className="outline-none px-2 w-[60%]  border-gray-400 border py-1.5"
               type="text"
             />
           </div>
@@ -112,30 +118,101 @@ const Form = ({ editData }: FormProps) => {
             </small>
           )}
         </div>
+
+        {/* for quantity */}
         <div className="">
           <div className="flex gap-2 ">
-            <label htmlFor="" className="text-xl w-[30%]">
-              Pickup Date:
+            <label htmlFor="qty" className="text-xl w-[40%]">
+              Quantity:
             </label>
             <input
-              placeholder=" Choose Suitable Pickup Date"
-              {...register("pickupDate", {
-                required: { value: true, message: "date is required" },
-                // max: { value: 20, message: "addrsss must be less than 20" },
+              placeholder=" Enter Quantity"
+              {...register("qty", {
+                required: { value: true, message: "Quantity is required" },
+                max: {
+                  value: 20,
+                  message: "Quantity must be in number",
+                },
               })}
-              className="outline-none px-2  border-gray-400 border py-1.5"
+              className="outline-none px-2 w-[60%]  border-gray-400 border py-1.5"
               type="text"
             />
           </div>
-          {errors?.pickupDate && (
+          {errors?.qty && (
             <small className="w-full text-red-600 flex justify-center right-0 top-0">
-              {errors?.pickupDate?.message}
+              {errors?.qty?.message}
             </small>
           )}
         </div>
+
+        {/* for units */}
         <div className="">
           <div className="flex gap-2 ">
-            <label htmlFor="" className="text-xl w-[30%]">
+            <label htmlFor="" className="text-xl w-[40%]">
+              Unit:
+            </label>
+            {/* <input
+              placeholder=" choose items: "
+              {...register("items", {
+                required: { value: true, message: "Item is required" },
+                max: { value: 30, message: "Please, choose one item" },
+              })}
+              className="outline-none px-2  border-gray-400 border py-1.5"
+              type="text"
+            /> */}
+            <select
+              {...register("unit", {
+                validate: (value) => value != "null",
+              })}
+              className="px-2 bg-inherit outline-none w-[60%] border-gray-400 border py-1.5"
+            >
+              <option selected value={"null"}>
+                Choose Unit
+              </option>
+              <option value="Kg">Kg</option>
+              <option value="Dozen">Dozen</option>
+              <option value="Bundle">Bundle</option>
+              <option value="Pack">Pack</option>
+              <option value="Rim">Rim</option>
+              <option value="Pcs">Pcs</option>
+              <option value="Ton">Ton</option>
+              <option value="Quintle">Quintle</option>
+            </select>
+          </div>
+          {errors?.unit && (
+            <small className="w-full text-red-600 flex justify-center right-0 top-0">
+              {errors?.unit?.message}
+            </small>
+          )}
+        </div>
+
+        {/* for pickupDate */}
+        <div className="">
+          <div className="flex gap-2 ">
+            <label htmlFor="" className="text-xl w-[40%]">
+              Pickup Date:
+            </label>
+            <div className=" w-[60%]">
+              <input
+                placeholder=" Choose Suitable Pickup Date"
+                {...register("pickupDate", {
+                  required: { value: true, message: "date is required" },
+                  // max: { value: 20, message: "addrsss must be less than 20" },
+                })}
+                className="outline-none px-2 w-full border-gray-400 border py-1.5"
+                type="date"
+              />
+              {errors?.pickupDate && (
+                <small className="w-full text-red-600 flex justify-center right-0 top-0">
+                  {errors?.pickupDate?.message}
+                </small>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="">
+          <div className="flex gap-2 ">
+            <label htmlFor="" className="text-xl w-[40%]">
               Pickup Time:
             </label>
             <input
@@ -147,8 +224,8 @@ const Form = ({ editData }: FormProps) => {
                 //   message: "phone must be 10 digit",
                 // },
               })}
-              className="outline-none px-2  border-gray-400 border py-1.5"
-              type="text"
+              className="outline-none px-2 w-[60%] border-gray-400 border py-1.5"
+              type="time"
             />
           </div>
           {errors?.pickupTime && (
@@ -159,7 +236,7 @@ const Form = ({ editData }: FormProps) => {
         </div>
         <div className="">
           <div className="flex gap-2 items-center">
-            <label htmlFor="" className="text-xl w-[30%]">
+            <label htmlFor="" className="text-xl w-[40%]">
               Pickup Location:
             </label>
             <input
@@ -167,7 +244,7 @@ const Form = ({ editData }: FormProps) => {
                 required: { value: true, message: "Location is required" },
               })}
               placeholder="Enter location or choose from map"
-              className="outline-none px-2  border-gray-400 border py-1.5"
+              className="outline-none px-2 w-[60%]  border-gray-400 border py-1.5"
               type="text"
             />
           </div>
@@ -180,17 +257,17 @@ const Form = ({ editData }: FormProps) => {
         <div className="">
           <div className="">
             <div className="flex gap-2 items-center">
-              <label htmlFor="" className="text-xl w-[30%]">
+              <label htmlFor="" className="text-xl w-[40%]">
                 Payment Method:
               </label>
               <select
                 {...register("paymentMethod", {
                   validate: (value) => value != "null",
                 })}
-                className="px-2 bg-inherit outline-none w-full border-gray-400 border py-1.5"
+                className="px-2 bg-inherit outline-none w-[60%] border-gray-400 border py-1.5"
               >
                 <option selected value={"null"}>
-                  choose
+                  Choose payment method
                 </option>
                 <option value="QR">QR</option>
                 <option value="bankTransfer">Bank Transfer</option>
@@ -205,7 +282,7 @@ const Form = ({ editData }: FormProps) => {
             )}
           </div>
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-end">
           <button
             type="submit"
             className="bg-purple-700  text-white px-8 py-2 rounded-md"

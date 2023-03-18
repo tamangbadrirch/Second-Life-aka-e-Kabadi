@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Category } from "./Form";
-
+import swal from "sweetalert";
 const Table = () => {
   const [categorylist, setCategorylist] = useState<Category[]>([]);
   const [filteredCategorylist, setFilteredCategorylist] = useState<Category[]>(
@@ -18,16 +18,28 @@ const Table = () => {
       setFilteredCategorylist(data?.data as Category[]);
     }
   };
-  const deleteCategory = async (id: number) => {
-    const value = window.prompt("Are you sure, you want to delete?");
-    if (value == "yes") {
+  const deleteCategory = async (id: string) => {
+    const dlt = async () => {
       const { data, error } = await asyncDelete(categoryUrl.delete + id);
       if (data && !error) {
         // fetchAllEmploye();
-        setCategorylist((c) => c.filter((f) => f.id != id));
-        setCategorylist((c) => c.filter((f) => f.id != id));
+        setCategorylist((c) => c.filter((f) => f._id != id));
+        setFilteredCategorylist((c) => c.filter((f) => f._id != id));
       }
-    }
+    };
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        dlt().then(() => {
+          swal("Good job!", "Successfully Deleted!", "Success");
+        });
+      }
+    });
   };
 
   // const callback=(a:any)=>{x
@@ -73,7 +85,7 @@ const Table = () => {
         </Link>
       </div>
       <div className="bg-white p-2">
-        {/* {JSON.stringify(employeelist)} */}
+        {/* {JSON.stringify(filteredCategorylist)} */}
         <table className="w-full mt-3">
           <thead className=" bg-purple-600  ">
             <tr className="">
@@ -97,13 +109,13 @@ const Table = () => {
                     <td className="p-3">{data.phone}</td>
                     <td className="p-3">{data.age}</td> */}
                     <td className="p-3 flex gap-2 justify-center">
-                      <Link href={`/category/${data.id}`}>
+                      <Link href={`/admin/category/${data?._id}`}>
                         <button className="outline-none bg-green-600  px-2 py-0.5 rounded-md text-sm  text-white ">
                           Edit
                         </button>
                       </Link>
                       <button
-                        onClick={() => deleteCategory(data.id)}
+                        onClick={() => deleteCategory(data._id)}
                         className="outline-none bg-red-600  px-2 py-0.5 rounded-md text-sm  text-white "
                       >
                         dlt

@@ -33,11 +33,7 @@ const sidebarData: SidebarInterface[] = [
     icon: <BsCartPlus />,
     link: "/user/order",
   },
-  // {
-  //   title: "Notification",
-  //   icon: <IoIosNotifications />,  //we will show notifications from navbar at right
-  //   link: "/user/notification",
-  // },
+
   {
     title: "Requested Order",
     icon: <BsCartPlus />,
@@ -54,6 +50,25 @@ const sidebarData: SidebarInterface[] = [
     icon: <MdSpellcheck />,
     link: "#",
   },
+
+  {
+    title: "User_Management",
+    icon: <IoIosNotifications />, //we will show notifications from navbar at right
+    link: "#",
+  },
+
+  {
+    title: "RolesAccess",
+    icon: <IoIosNotifications />, //we will show notifications from navbar at right
+    link: "#",
+  },
+
+  {
+    title: "Modules",
+    icon: <IoIosNotifications />, //we will show notifications from navbar at right
+    link: "#",
+  },
+
   {
     title: "Category",
     icon: <BiCategory />,

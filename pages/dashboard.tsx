@@ -17,9 +17,7 @@ const dashboard = () => {
     <div>
       <Mainlayout title={"Dashboard"}>
         <Container breadCrumb={breadCrumb} title={"Dashboard"}>
-          <div className="font-bold"> Who we are ? </div>
-          <div className="font-bold"> What we do ? </div>
-          <div className="font-bold"> How we work ? </div>
+          <div className="font-bold"> Welcome to Dashboard </div>
         </Container>
       </Mainlayout>
     </div>

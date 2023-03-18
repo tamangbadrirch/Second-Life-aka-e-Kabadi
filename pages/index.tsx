@@ -20,7 +20,7 @@ export default function Home() {
       <Head>
         <title>ScrapProject</title>
       </Head>
-      <div className="flex justify-end font-te">
+      <div className="flex justify-end">
         <h1
           className="ml-8 flex grow text-3xl font-bold"
           style={{ color: "#2596be" }}
@@ -40,6 +40,71 @@ export default function Home() {
         >
           Register
         </button>
+      </div>
+
+      <div className="bg-orange-500 text-4xl font-bold text-white mt-4">
+        Who we are?
+        <div className="bg-red-200 text-2xl mt-4 text-red-800 text-center ml-2">
+          We are team SecondLife.<br></br> Team of young & energetic positive
+          mind people. <br></br> We try to cater the problem of traditional
+          waste recyle with our digital platform in a new way.
+        </div>
+      </div>
+
+      <div className="bg-orange-500 text-4xl font-bold text-white mt-4">
+        What we buy?
+        <div className="bg-red-200 text-2xl mt-4 text-red-800 text-center ml-2 flex items-center flex-wrap">
+          <div className="mx-4">
+            <Image
+              src="/newsPaper.jpg"
+              height={300}
+              width={300}
+              className="border border-black w-300 h-300"
+              alt="NewsPaper Image"
+              // layout="fixed"
+            />
+            newspaper
+          </div>
+          <div className="mx-4">
+            <Image
+              src="/books.jpg"
+              height={300}
+              width={300}
+              className="border border-white w-250 h-250"
+              alt="Books Image"
+              // layout="fixed"
+            />
+            books
+          </div>
+
+          <div className="mx-4">
+            <Image
+              src="/iron.jpg"
+              height={300}
+              width={300}
+              className="border border-white w-250 h-250"
+              alt="Books Image"
+              // layout="fixed"
+            />
+            irons
+          </div>
+          {/* <div className="ml-2">
+            Team of young & energetic positive mind people. <br></br> We try to
+            cater the problem of traditional waste recycle with our digital
+            platform in a new way.
+          </div> */}
+        </div>
+        <div className="bg-orange-500 text-4xl font-bold text-white mt-4">
+          How we work?
+          <div className="bg-red-200 text-2xl mt-4 text-red-800 ml-2">
+            1. Place order <br />
+            2. Confirm your order with our Team <br />
+            3. Our team will reach at your location at the time you provided
+            <br />
+            4. We pick up goods <br /> 5. We pay you <br />
+            6. Deal Complete
+          </div>
+        </div>
       </div>
 
       <Image

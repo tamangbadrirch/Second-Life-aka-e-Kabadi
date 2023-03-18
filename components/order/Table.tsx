@@ -76,9 +76,11 @@ const Table = () => {
         <table className="w-full mt-3">
           <thead className=" text-black bg-purple-600  ">
             <tr className="">
-              <th className="p-3">Id</th>
+              <th className="p-3">User</th>
               <th className="p-3">Category</th>
               <th className="p-3">Items</th>
+              <th className="p-3">Quantity</th>
+              <th className="p-3">Unit</th>
               <th className="p-3">Pickup Date</th>
               <th className="p-3">Pickup Time</th>
               <th className="p-3">Pickup Location</th>
@@ -93,6 +95,8 @@ const Table = () => {
                     <td className="p-3 ">{i + 1}</td>
                     <td className="p-3">{data.category}</td>
                     <td className="p-3">{data.items}</td>
+                    <td className="p-3">{data.qty}</td>
+                    <td className="p-3">{data.unit}</td>
                     <td className="p-3">{data.pickupDate}</td>
                     <td className="p-3">{data.pickupTime}</td>
                     <td className="p-3">{data.pickupLocation}</td>

@@ -1,10 +1,11 @@
-import { itemsUrl } from "@/Apis/list.api";
-import { asyncPost, asyncPut } from "@/Apis/rest.api";
+import { categoryUrl, itemsUrl } from "@/Apis/list.api";
+import { asyncGet, asyncPost, asyncPut } from "@/Apis/rest.api";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-
+import { useState } from "react";
+import swal from "sweetalert";
 interface FormProps {
   editData?: Items;
 }
@@ -12,6 +13,7 @@ export interface Items {
   id: number;
   categoryName: string;
   items: string;
+  // unit: string;
 }
 const Form = ({ editData }: FormProps) => {
   const {
@@ -21,6 +23,7 @@ const Form = ({ editData }: FormProps) => {
     formState: { errors },
   } = useForm<Items>();
   const router = useRouter();
+  const [categoryList, setCategoryList] = useState([]);
   //function that is call after submit
   const saveItems = async (value: Items) => {
     //api call
@@ -35,16 +38,29 @@ const Form = ({ editData }: FormProps) => {
         payload
       );
       if (data && !error) {
-        alert("Successfully updated!");
-        router.push("/items");
+        swal({
+          text: "successfully created",
+          icon: "success",
+        });
+        router.push("/admin/items");
       }
     } else {
       //create
       const { data, error } = await asyncPost(itemsUrl.save, payload);
       if (data && !error) {
-        alert("Successfully saved!");
-        router.push("/items");
+        swal({
+          text: "successfully created",
+          icon: "success",
+        });
+        router.push("/admin/items");
       }
+    }
+  };
+
+  const fetchCategory = async () => {
+    const { data, error } = await asyncGet(categoryUrl.get);
+    if (data && !error) {
+      setCategoryList(data?.data);
     }
   };
 
@@ -53,10 +69,15 @@ const Form = ({ editData }: FormProps) => {
       setValue("id", editData?.id);
       setValue("categoryName", editData?.categoryName);
       setValue("items", editData?.items);
+      // setValue("unit", editData?.unit);
     }
   }, [editData]);
+  useEffect(() => {
+    fetchCategory();
+  }, []);
   return (
     <div className="flex  bg-white mx-auto p-16 justify-center  w-[100%]">
+      {/* {JSON.stringify(categoryList)} */}
       <form
         onSubmit={handleSubmit(saveItems)}
         action=""
@@ -64,15 +85,25 @@ const Form = ({ editData }: FormProps) => {
       >
         <div className=" relative items-center">
           <div className="flex gap-2">
-            <label htmlFor="" className="text-xl w-[30%]">
+            <label htmlFor="" className="text-xl w-[40%]">
               Category:
             </label>
-            <input
-              placeholder=" Enter Category Name:"
-              {...register("categoryName", { required: true })}
+            <select
               className="outline-none px-2  border-gray-400 border py-1.5"
-              type="text"
-            />
+              {...register("categoryName", {
+                required: true,
+                validate: (v) => {
+                  if (v == "null") return "category is required";
+                },
+              })}
+            >
+              <option value="null" selected>
+                choose
+              </option>
+              {categoryList.map((m: any, i: number) => {
+                return <option value={m?._id}>{m?.category}</option>;
+              })}
+            </select>
           </div>
           {errors?.categoryName && (
             <small className="w-full text-red-600 flex justify-center right-0 top-0">
@@ -80,7 +111,6 @@ const Form = ({ editData }: FormProps) => {
             </small>
           )}
         </div>
-
         <div className="">
           <div className="flex gap-2 ">
             <label htmlFor="" className="text-xl w-[30%]">
@@ -102,8 +132,8 @@ const Form = ({ editData }: FormProps) => {
             </small>
           )}
         </div>
-
-        <div className="flex justify-center">
+        {/* for button */}
+        <div className="flex justify-end">
           <button
             type="submit"
             className="bg-purple-700  text-white px-8 py-2 rounded-md"

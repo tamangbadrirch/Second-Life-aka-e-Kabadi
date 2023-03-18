@@ -18,7 +18,7 @@ const items = {
 const category = {
   save: "/category",
   get: "/category",
-  delete: "/category",
+  delete: "/category/",
   
 };
 const orders = {

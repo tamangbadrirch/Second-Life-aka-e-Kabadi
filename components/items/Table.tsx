@@ -7,7 +7,7 @@ import { Items } from "./Form";
 
 const Table = () => {
   const [itemslist, setItemslist] = useState<Items[]>([]);
-  const [filteredItemslist, setFilteredItemslist] = useState<Items[]>([]);
+  const [filteredItemslist, setFilteredItemslist] = useState<any[]>([]);
 
   const fetchAllItems = async () => {
     const { data, error } = await asyncGet(itemsUrl.get);
@@ -56,6 +56,7 @@ const Table = () => {
 
   return (
     <div>
+      {/* {JSON.stringify(itemslist)} */}
       <div className="flex justify-between my-3 mt-4">
         <div>
           <input
@@ -78,6 +79,7 @@ const Table = () => {
               <th className="p-3">Id</th>
               <th className="p-3">categoryName</th>
               <th className="p-3">Items</th>
+              <th className="p-3">Action</th>
 
               {/* <th className="p-3">Address</th>
               <th className="p-3">Phone</th>
@@ -91,8 +93,8 @@ const Table = () => {
                 return (
                   <tr className="hover:bg-gray-200  p-3 text-center">
                     <td className="p-3 ">{i + 1}</td>
-                    <td className="p-3">{data.categoryName}</td>
-                    <td className="p-3">{data.items}</td>
+                    <td className="p-3">{data?.categoryId?.category}</td>
+                    <td className="p-3">{data?.itemName}</td>
                     {/* <td className="p-3">{data.address}</td>
                     <td className="p-3">{data.phone}</td>
                     <td className="p-3">{data.age}</td> */}

@@ -1,9 +1,10 @@
 import { categoryUrl } from "@/Apis/list.api";
-import { asyncPost, asyncPut } from "@/Apis/rest.api";
+import { asyncPatch, asyncPost, asyncPut } from "@/Apis/rest.api";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import swal from "sweetalert";
 
 //There won't be category for userside
 
@@ -11,7 +12,7 @@ interface FormProps {
   editData?: Category;
 }
 export interface Category {
-  id: number;
+  _id: string;
   category: string;
 }
 const Form = ({ editData }: FormProps) => {
@@ -29,15 +30,18 @@ const Form = ({ editData }: FormProps) => {
       ...value,
     };
 
-    if (editData && editData?.id) {
+    if (editData && editData?._id) {
       //update
-      const { data, error } = await asyncPut(
-        categoryUrl.save + "/" + editData.id, //put ma / use garne
+      const { data, error } = await asyncPatch(
+        categoryUrl.save + "/" + editData._id, //put ma / use garne
         payload
       );
       if (data && !error) {
-        alert("update success");
-        router.push("/category");
+        swal({
+          icon: "success",
+          text: "successfully updated record",
+        });
+        router.push("/admin/category");
       }
     } else {
       //create
@@ -51,7 +55,7 @@ const Form = ({ editData }: FormProps) => {
 
   useEffect(() => {
     if (editData) {
-      setValue("id", editData?.id);
+      setValue("_id", editData?._id);
       setValue("category", editData?.category);
     }
   }, [editData]);
