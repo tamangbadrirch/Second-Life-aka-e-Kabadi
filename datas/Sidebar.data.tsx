@@ -5,6 +5,7 @@ import {
   FaUserAstronaut,
   FaUserFriends,
   FaTruckLoading,
+  FaCriticalRole,
 } from "react-icons/fa";
 
 import { BiMoney } from "react-icons/bi";
@@ -13,6 +14,7 @@ import { BsCartPlus } from "react-icons/bs";
 import { GiTemplarEye } from "react-icons/gi";
 import { BiCategory } from "react-icons/bi";
 import { MdSpellcheck } from "react-icons/md";
+import { AiOutlineUserAdd } from "react-icons/Ai";
 
 interface SidebarInterface {
   title: string;
@@ -53,13 +55,13 @@ const sidebarData: SidebarInterface[] = [
 
   {
     title: "User_Management",
-    icon: <IoIosNotifications />, //we will show notifications from navbar at right
+    icon: <AiOutlineUserAdd />, //we will show notifications from navbar at right
     link: "#",
   },
 
   {
     title: "RolesAccess",
-    icon: <IoIosNotifications />, //we will show notifications from navbar at right
+    icon: <FaCriticalRole />, //we will show notifications from navbar at right
     link: "#",
   },
 
