@@ -1,20 +1,15 @@
 import {
   FaDashcube,
-  FaFileAlt,
-  FaUserAlt,
-  FaUserAstronaut,
-  FaUserFriends,
   FaTruckLoading,
   FaCriticalRole,
 } from "react-icons/fa";
 
-import { BiMoney } from "react-icons/bi";
 import { IoIosNotifications } from "react-icons/io";
 import { BsCartPlus } from "react-icons/bs";
 import { GiTemplarEye } from "react-icons/gi";
 import { BiCategory } from "react-icons/bi";
 import { MdSpellcheck } from "react-icons/md";
-import { AiOutlineUserAdd } from "react-icons/Ai";
+import { AiOutlineUserAdd } from "react-icons/ai";
 
 interface SidebarInterface {
   title: string;

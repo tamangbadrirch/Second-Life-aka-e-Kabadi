@@ -1,5 +1,6 @@
-import { employeeUrl, ordersUrl } from "@/Apis/list.api";
-import { asyncGet, asyncPost, asyncPut } from "@/Apis/rest.api";
+import { categoryUrl, employeeUrl, itemsUrl, ordersUrl } from "@/Apis/list.api";
+import { asyncGet, asyncPatch, asyncPost, asyncPut } from "@/Apis/rest.api";
+import { format } from "@/utils/format";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,7 +16,7 @@ export interface Orders {
   items: string;
   quantity: number;
   unit: string;
-  pickupDate: Date;
+  pickupDate: String;
   pickupTime: Date;
   pickupLocation: string;
   paymentMethod: string;
@@ -25,10 +26,12 @@ const Form = ({ editData }: FormProps) => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<Orders>();
   const router = useRouter();
-  const [orderList, setOrderList] = useState([]);
+  const [categoryList, setCateogryList] = useState<any[]>([]);
+  const [items, setItems] = useState<any[]>([])
   //function that is call after submit
   const saveOrders = async (value: Orders) => {
     //api call
@@ -38,7 +41,7 @@ const Form = ({ editData }: FormProps) => {
 
     if (editData && editData?._id) {
       //update
-      const { data, error } = await asyncPut(
+      const { data, error } = await asyncPatch(
         ordersUrl.put + editData._id,
         payload
       );
@@ -47,7 +50,7 @@ const Form = ({ editData }: FormProps) => {
           text: "Successfully created",
           icon: "Success",
         });
-        // router.push("/user/order");
+        router.push("/user/order");
       }
     } else {
       //create
@@ -57,26 +60,46 @@ const Form = ({ editData }: FormProps) => {
           text: "Successfully created",
           icon: "Success",
         });
-        // router.push("/user/order");
+        router.push("/user/order");
       }
     }
   };
 
   const fetchCategory = async () => {
-    const { data, error } = await asyncGet(ordersUrl.get);
+    const { data, error } = await asyncGet(categoryUrl.get);
     if (data && !error) {
-      setOrderList(data?.data);
+      setCateogryList(data?.data);
     }
   };
+
+  const fetchItembyCategoryid = async (id: string) => {
+    const { data, error } = await asyncGet(itemsUrl.getItemBycategory + id);
+    if (data && !error) {
+      setItems(data?.data);
+    }
+  }
+  const fetchItem = async () => {
+    const { data, error } = await asyncGet(itemsUrl.get);
+    if (data && !error) {
+      setItems(data?.data);
+    }
+  }
+
+  useEffect(() => {
+    const catid = watch('category')
+    if (catid != null) {
+      fetchItembyCategoryid(catid)
+    }
+  }, [watch('category')])
 
   useEffect(() => {
     if (editData) {
       setValue("id", editData?._id);
-      setValue("category", editData?.category);
-      setValue("items", editData?.items);
+      setValue("category", editData?.categoryId);
+      setValue("items", editData?.itemsId);
       setValue("quantity", editData?.quantity);
       setValue("unit", editData?.unit);
-      setValue("pickupDate", editData?.pickupDate);
+      setValue("pickupDate", format(editData?.pickupDate) as string);
       setValue("pickupTime", editData?.pickupTime);
       setValue("pickupLocation", editData?.pickupLocation);
       setValue("paymentMethod", editData?.paymentMethod);
@@ -84,6 +107,9 @@ const Form = ({ editData }: FormProps) => {
   }, [editData]);
   useEffect(() => {
     fetchCategory();
+    if (editData) {
+      fetchItem()
+    }
   }, []);
   return (
     <div className="flex  bg-white mx-auto p-12 justify-center  w-[100%]">
@@ -109,7 +135,16 @@ const Form = ({ editData }: FormProps) => {
                 validate: (value) => value != "null",
               })}
               className="px-2 bg-inherit outline-none w-[60%] border-gray-400 border py-1.5"
-            />
+            >
+              <option selected value={'null'}>select the category</option>
+              {
+                categoryList?.map((c, i) => {
+                  return (
+                    <option value={c?._id}>{c?.category}</option>
+                  )
+                })
+              }
+            </select>
           </div>
           {errors?.category && (
             <small className="w-full text-red-600 flex justify-center right-0 top-0">
@@ -123,25 +158,24 @@ const Form = ({ editData }: FormProps) => {
             <label htmlFor="" className="text-xl w-[40%]">
               Items:
             </label>
-            {/* <input
-              placeholder=" Enter Items"
-              {...register("items", {
-                required: { value: true, message: "item is required" },
-                max: {
-                  value: 20,
-                  message: "items must be less than 20 character",
-                },
-              })}
-              className="outline-none px-2 w-[60%]  border-gray-400 border py-1.5"
-              type="text"
-            /> */}
+
 
             <select
               {...register("items", {
                 validate: (value) => value != "null",
               })}
               className="px-2 bg-inherit outline-none w-[60%] border-gray-400 border py-1.5"
-            />
+            >
+
+              <option value="null" selected>select the item</option>
+              {
+                items?.map((d, i) => {
+                  return (
+                    <option value={d?._id}>{d?.itemName}</option>
+                  )
+                })
+              }
+            </select>
           </div>
           {errors?.items && (
             <small className="w-full text-red-600 flex justify-center right-0 top-0">
