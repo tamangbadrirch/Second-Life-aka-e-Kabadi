@@ -3,11 +3,12 @@ import { asyncDelete, asyncGet } from "@/Apis/rest.api";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import swal from "sweetalert";
 import { Orders } from "./Form";
 
 const Table = () => {
-  const [orderslist, setOrderslist] = useState<Orders[]>([]);
-  const [filteredOrderslist, setFilteredOrderslist] = useState<Orders[]>([]);
+  const [orderslist, setOrderslist] = useState<any[]>([]);
+  const [filteredOrderslist, setFilteredOrderslist] = useState<any[]>([]);
 
   const fetchAllOrders = async () => {
     const { data, error } = await asyncGet(ordersUrl.get);
@@ -16,38 +17,29 @@ const Table = () => {
       setFilteredOrderslist(data?.data as Orders[]);
     }
   };
+
   const deleteOrders = async (id: number) => {
-    const value = window.prompt("Ary you sure, you want to delete?");
-    if (value == "yes") {
+    const dlt = async () => {
       const { data, error } = await asyncDelete(ordersUrl.delete + id);
       if (data && !error) {
-        // fetchAllEmploye();
-        setOrderslist((c) => c.filter((f) => f.id != id));
-        setOrderslist((c) => c.filter((f) => f.id != id));
+        setOrderslist((c) => c.filter((f) => f._id != id));
+        setFilteredOrderslist((c) => c.filter((f) => f._id != id));
       }
-    }
-  };
+    };
 
-  // const callback=(a:any)=>{x
-  //  return a.filter(filterCallback)
-  // }
-  // const filterCallback=(f:any)=>{
-  // return  f.id!=id
-  // }
-
-  const filterSearch = (e: any) => {
-    const value = e.target.value;
-    if (value) {
-      setFilteredOrderslist(
-        orderslist.filter(
-          (f) => f.orders?.toString().includes(value)
-          // ||
-          // f.address?.toString().includes(value)
-        )
-      );
-    } else {
-      setFilteredOrderslist(orderslist);
-    }
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this file!",
+      icon: "Warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        dlt().then(() => {
+          swal("Good Job!", "Successfully deleted!", "Success");
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -60,7 +52,7 @@ const Table = () => {
         <div>
           <input
             type="text"
-            onChange={filterSearch}
+            // onChange={filterSearch}
             className="border border-gray-400 rounded-md outline-none p-1.5"
           />
         </div>
@@ -77,7 +69,7 @@ const Table = () => {
           <thead className=" text-black bg-purple-600  ">
             <tr className="">
               <th className="p-3">User</th>
-              <th className="p-3">Category</th>
+              {/* <th className="p-3">Category</th> */}
               <th className="p-3">Items</th>
               <th className="p-3">Quantity</th>
               <th className="p-3">Unit</th>
@@ -85,6 +77,7 @@ const Table = () => {
               <th className="p-3">Pickup Time</th>
               <th className="p-3">Pickup Location</th>
               <th className="p-3">Payment Method</th>
+              <th className="p-3">Action</th>
             </tr>
           </thead>
           <tbody className="">
@@ -93,20 +86,17 @@ const Table = () => {
                 return (
                   <tr className="hover:bg-gray-200  p-3 text-center">
                     <td className="p-3 ">{i + 1}</td>
-                    <td className="p-3">{data.category}</td>
-                    <td className="p-3">{data.items}</td>
-                    <td className="p-3">{data.qty}</td>
-                    <td className="p-3">{data.unit}</td>
-                    <td className="p-3">{data.pickupDate}</td>
-                    <td className="p-3">{data.pickupTime}</td>
-                    <td className="p-3">{data.pickupLocation}</td>
-                    <td className="p-3">{data.paymentMethod}</td>
+                    <td className="p-3">{data?.categoryId?.category}</td>
+                    <td className="p-3">{data?.items}</td>
+                    <td className="p-3">{data?.quantity}</td>
+                    <td className="p-3">{data?.unit}</td>
+                    <td className="p-3">{data?.pickupDate}</td>
+                    <td className="p-3">{data?.pickupTime}</td>
+                    <td className="p-3">{data?.pickupLocation}</td>
+                    <td className="p-3">{data?.paymentMethod}</td>
 
-                    {/* <td className="p-3">{data.address}</td>
-                    <td className="p-3">{data.phone}</td>
-                    <td className="p-3">{data.age}</td> */}
                     <td className="p-3 flex gap-2 justify-center">
-                      <Link href={`/user/order/create/${data.id}`}>
+                      <Link href={`/user/order/${data.id}`}>
                         <button className="outline-none bg-green-600  px-2 py-0.5 rounded-md text-sm  text-white ">
                           Edit
                         </button>

@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import swal from "sweetalert";
 interface FormProps {
-  editData?: Items;
+  editData?: any;
 }
 export interface Items {
   id: number;
@@ -66,9 +66,9 @@ const Form = ({ editData }: FormProps) => {
 
   useEffect(() => {
     if (editData) {
-      setValue("id", editData?.id);
-      setValue("categoryName", editData?.categoryName);
-      setValue("items", editData?.items);
+      setValue("id", editData?._id);
+      setValue("categoryName", editData?.categoryId);
+      setValue("items", editData?.itemName);
       // setValue("unit", editData?.unit);
     }
   }, [editData]);
@@ -77,7 +77,7 @@ const Form = ({ editData }: FormProps) => {
   }, []);
   return (
     <div className="flex  bg-white mx-auto p-16 justify-center  w-[100%]">
-      {/* {JSON.stringify(categoryList)} */}
+      {/* {JSON.stringify(editData)} */}
       <form
         onSubmit={handleSubmit(saveItems)}
         action=""
@@ -145,5 +145,4 @@ const Form = ({ editData }: FormProps) => {
     </div>
   );
 };
-
 export default Form;

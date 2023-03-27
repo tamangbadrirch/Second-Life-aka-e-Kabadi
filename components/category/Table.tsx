@@ -118,7 +118,7 @@ const Table = () => {
                         onClick={() => deleteCategory(data._id)}
                         className="outline-none bg-red-600  px-2 py-0.5 rounded-md text-sm  text-white "
                       >
-                        dlt
+                        Delete
                       </button>
                     </td>
                   </tr>

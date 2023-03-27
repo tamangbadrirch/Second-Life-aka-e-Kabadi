@@ -4,9 +4,10 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Items } from "./Form";
+import swal from "sweetalert";
 
 const Table = () => {
-  const [itemslist, setItemslist] = useState<Items[]>([]);
+  const [itemslist, setItemslist] = useState<any[]>([]);
   const [filteredItemslist, setFilteredItemslist] = useState<any[]>([]);
 
   const fetchAllItems = async () => {
@@ -16,24 +17,30 @@ const Table = () => {
       setFilteredItemslist(data?.data as Items[]);
     }
   };
+
   const deleteItems = async (id: number) => {
-    const value = window.prompt("Ary you sure, you want to delete?");
-    if (value == "yes") {
+    const dlt = async () => {
       const { data, error } = await asyncDelete(itemsUrl.delete + id);
       if (data && !error) {
-        // fetchAllEmploye();
-        setItemslist((c) => c.filter((f) => f.id != id));
-        setItemslist((c) => c.filter((f) => f.id != id));
+        setItemslist((c) => c.filter((f) => f._id != id));
+        setFilteredItemslist((c) => c.filter((f) => f._id != id));
       }
-    }
-  };
+    };
 
-  // const callback=(a:any)=>{x
-  //  return a.filter(filterCallback)
-  // }
-  // const filterCallback=(f:any)=>{
-  // return  f.id!=id
-  // }
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        dlt().then(() => {
+          swal("Good Job!", "Successfully deleted!", "Success");
+        });
+      }
+    });
+  };
 
   const filterSearch = (e: any) => {
     const value = e.target.value;
@@ -80,11 +87,6 @@ const Table = () => {
               <th className="p-3">categoryName</th>
               <th className="p-3">Items</th>
               <th className="p-3">Action</th>
-
-              {/* <th className="p-3">Address</th>
-              <th className="p-3">Phone</th>
-              <th className="p-3">Age</th>
-              <th className="p-3">Action</th> */}
             </tr>
           </thead>
           <tbody className="">
@@ -95,17 +97,14 @@ const Table = () => {
                     <td className="p-3 ">{i + 1}</td>
                     <td className="p-3">{data?.categoryId?.category}</td>
                     <td className="p-3">{data?.itemName}</td>
-                    {/* <td className="p-3">{data.address}</td>
-                    <td className="p-3">{data.phone}</td>
-                    <td className="p-3">{data.age}</td> */}
                     <td className="p-3 flex gap-2 justify-center">
-                      <Link href={`/items/${data.id}`}>
+                      <Link href={`/admin/items/${data._id}`}>
                         <button className="outline-none bg-green-600  px-2 py-0.5 rounded-md text-sm  text-white ">
                           Edit
                         </button>
                       </Link>
                       <button
-                        onClick={() => deleteItems(data.id)}
+                        onClick={() => deleteItems(data._id)}
                         className="outline-none bg-red-600  px-2 py-0.5 rounded-md text-sm  text-white "
                       >
                         Delete
@@ -124,6 +123,8 @@ const Table = () => {
           </tbody>
         </table>
       </div>
+
+      {/* for pagination */}
       <div className="flex justify-end gap-2 absolute bottom-0 right-0">
         <button className="p-1 px-2 border border-gray-700  rounded-md">
           1

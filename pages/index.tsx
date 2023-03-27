@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <div className="">
       <Head>
-        <title>ScrapProject</title>
+        <title>Second Life</title>
       </Head>
       <div className="flex justify-end">
         <h1

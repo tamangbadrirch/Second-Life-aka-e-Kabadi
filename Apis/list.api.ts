@@ -2,17 +2,17 @@ const employee = {
   get: "/employee",
   post: "/employee",
   put: "/employee",
-  delete: "/employee",
+  delete: "/employee/",
 };
 const user = {
   save: "/users",
   get: "/users",
-  delete: "/users",
+  delete: "/users/",
 };
 const items = {
   save: "/items",
   get: "/items",
-  delete: "/items",
+  delete: "/items/",
 };
 
 const category = {
@@ -24,7 +24,7 @@ const category = {
 const orders = {
   save: "/orders",
   get: "/orders",
-  delete: "/orders",
+  delete: "/orders/",
   put: "/orders",
   
 };

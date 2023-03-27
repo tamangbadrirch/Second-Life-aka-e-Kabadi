@@ -1,45 +1,45 @@
-import { employeeUrl, itemsUrl } from "@/Apis/list.api";
+import { employeeUrl, itemsUrl, ordersUrl } from "@/Apis/list.api";
 import { asyncGet } from "@/Apis/rest.api";
 import Mainlayout from "@/layouts/Mainlayout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Container from "../container";
-import Form, { Items } from "./Form";
+import Form, { Orders } from "./Form";
 
 const breadCrumb: { title: string; link: string }[] = [
   {
     title: "Home",
-    link: "/items",
+    link: "/orders",
   },
   {
     title: "Items",
-    link: "/admin/items",
+    link: "/user/orders",
   },
   {
     title: "Update",
-    link: "/items/update",
+    link: "/orders/update",
   },
 ];
 const Update = () => {
   const router = useRouter();
-  const [items, setItems] = useState<Items>();
+  const [orders, setOrders] = useState<any>();
 
-  const fetchItems = async () => {
+  const fetchOrders = async () => {
     const id = router.query.id; //id from url
-    const { data, error } = await asyncGet(itemsUrl.get + "/" + id);
+    const { data, error } = await asyncGet(ordersUrl.get + "/" + id);
     if (data && !error) {
-      setItems(data?.data);
+      setOrders(data?.data);
     }
   };
 
   useEffect(() => {
-    fetchItems();
+    fetchOrders();
   }, [router.isReady]);
 
   return (
     <Mainlayout>
-      <Container breadCrumb={breadCrumb} title="Update Items">
-        <Form editData={items} />
+      <Container breadCrumb={breadCrumb} title="Update Orders">
+        <Form editData={orders} />
       </Container>
     </Mainlayout>
   );

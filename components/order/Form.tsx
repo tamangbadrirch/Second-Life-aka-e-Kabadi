@@ -1,21 +1,22 @@
 import { employeeUrl, ordersUrl } from "@/Apis/list.api";
-import { asyncPost, asyncPut } from "@/Apis/rest.api";
+import { asyncGet, asyncPost, asyncPut } from "@/Apis/rest.api";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import swal from "sweetalert";
 
 interface FormProps {
-  editData?: Orders;
+  editData?: any;
 }
 export interface Orders {
-  id: number;
+  id: string;
   category: string;
   items: string;
-  qty: number;
+  quantity: number;
   unit: string;
-  pickupDate: string;
-  pickupTime: string;
+  pickupDate: Date;
+  pickupTime: Date;
   pickupLocation: string;
   paymentMethod: string;
 }
@@ -27,7 +28,7 @@ const Form = ({ editData }: FormProps) => {
     formState: { errors },
   } = useForm<Orders>();
   const router = useRouter();
-  const [categorylist, addcategorylist] = useState([]);
+  const [orderList, setOrderList] = useState([]);
   //function that is call after submit
   const saveOrders = async (value: Orders) => {
     //api call
@@ -35,32 +36,45 @@ const Form = ({ editData }: FormProps) => {
       ...value,
     };
 
-    if (editData && editData?.id) {
+    if (editData && editData?._id) {
       //update
       const { data, error } = await asyncPut(
-        ordersUrl.put + editData.id,
+        ordersUrl.put + editData._id,
         payload
       );
       if (data && !error) {
-        alert("Successfully updated");
-        router.push("/orders");
+        swal({
+          text: "Successfully created",
+          icon: "Success",
+        });
+        // router.push("/user/order");
       }
     } else {
       //create
       const { data, error } = await asyncPost(ordersUrl.save, payload);
       if (data && !error) {
-        alert("Saved Successfully");
-        router.push("/orders");
+        swal({
+          text: "Successfully created",
+          icon: "Success",
+        });
+        // router.push("/user/order");
       }
+    }
+  };
+
+  const fetchCategory = async () => {
+    const { data, error } = await asyncGet(ordersUrl.get);
+    if (data && !error) {
+      setOrderList(data?.data);
     }
   };
 
   useEffect(() => {
     if (editData) {
-      setValue("id", editData?.id);
+      setValue("id", editData?._id);
       setValue("category", editData?.category);
       setValue("items", editData?.items);
-      setValue("qty", editData?.qty);
+      setValue("quantity", editData?.quantity);
       setValue("unit", editData?.unit);
       setValue("pickupDate", editData?.pickupDate);
       setValue("pickupTime", editData?.pickupTime);
@@ -68,6 +82,9 @@ const Form = ({ editData }: FormProps) => {
       setValue("paymentMethod", editData?.paymentMethod);
     }
   }, [editData]);
+  useEffect(() => {
+    fetchCategory();
+  }, []);
   return (
     <div className="flex  bg-white mx-auto p-12 justify-center  w-[100%]">
       <form
@@ -80,11 +97,18 @@ const Form = ({ editData }: FormProps) => {
             <label htmlFor="" className="text-xl w-[40%]">
               Category:
             </label>
-            <input
+            {/* <input
               placeholder=" Enter Category"
               {...register("category", { required: true })}
               className="outline-none px-2  border-gray-400 border py-1.5 w-[60%]"
               type="text"
+            /> */}
+
+            <select
+              {...register("category", {
+                validate: (value) => value != "null",
+              })}
+              className="px-2 bg-inherit outline-none w-[60%] border-gray-400 border py-1.5"
             />
           </div>
           {errors?.category && (
@@ -99,7 +123,7 @@ const Form = ({ editData }: FormProps) => {
             <label htmlFor="" className="text-xl w-[40%]">
               Items:
             </label>
-            <input
+            {/* <input
               placeholder=" Enter Items"
               {...register("items", {
                 required: { value: true, message: "item is required" },
@@ -110,6 +134,13 @@ const Form = ({ editData }: FormProps) => {
               })}
               className="outline-none px-2 w-[60%]  border-gray-400 border py-1.5"
               type="text"
+            /> */}
+
+            <select
+              {...register("items", {
+                validate: (value) => value != "null",
+              })}
+              className="px-2 bg-inherit outline-none w-[60%] border-gray-400 border py-1.5"
             />
           </div>
           {errors?.items && (
@@ -122,12 +153,12 @@ const Form = ({ editData }: FormProps) => {
         {/* for quantity */}
         <div className="">
           <div className="flex gap-2 ">
-            <label htmlFor="qty" className="text-xl w-[40%]">
+            <label htmlFor="quantity" className="text-xl w-[40%]">
               Quantity:
             </label>
             <input
               placeholder=" Enter Quantity"
-              {...register("qty", {
+              {...register("quantity", {
                 required: { value: true, message: "Quantity is required" },
                 max: {
                   value: 20,
@@ -138,9 +169,9 @@ const Form = ({ editData }: FormProps) => {
               type="text"
             />
           </div>
-          {errors?.qty && (
+          {errors?.quantity && (
             <small className="w-full text-red-600 flex justify-center right-0 top-0">
-              {errors?.qty?.message}
+              {errors?.quantity?.message}
             </small>
           )}
         </div>
