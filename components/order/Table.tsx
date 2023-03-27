@@ -49,6 +49,7 @@ const Table = () => {
   return (
     <div>
       <div className="flex justify-between my-3 mt-4">
+        {/* {JSON.stringify(orderslist)} */}
         <div>
           <input
             type="text"
@@ -86,8 +87,7 @@ const Table = () => {
                 return (
                   <tr className="hover:bg-gray-200  p-3 text-center">
                     <td className="p-3 ">{i + 1}</td>
-                    <td className="p-3">{data?.categoryId?.category}</td>
-                    <td className="p-3">{data?.items}</td>
+                    <td className="p-3">{data?.itemsId?.itemName}</td>
                     <td className="p-3">{data?.quantity}</td>
                     <td className="p-3">{data?.unit}</td>
                     <td className="p-3">{data?.pickupDate}</td>
@@ -96,13 +96,13 @@ const Table = () => {
                     <td className="p-3">{data?.paymentMethod}</td>
 
                     <td className="p-3 flex gap-2 justify-center">
-                      <Link href={`/user/order/${data.id}`}>
+                      <Link href={`/user/order/${data._id}`}>
                         <button className="outline-none bg-green-600  px-2 py-0.5 rounded-md text-sm  text-white ">
                           Edit
                         </button>
                       </Link>
                       <button
-                        onClick={() => deleteOrders(data.id)}
+                        onClick={() => deleteOrders(data._id)}
                         className="outline-none bg-red-600  px-2 py-0.5 rounded-md text-sm  text-white "
                       >
                         Delete

@@ -9,11 +9,11 @@ import Form, { Orders } from "./Form";
 const breadCrumb: { title: string; link: string }[] = [
   {
     title: "Home",
-    link: "/orders",
+    link: "/user/order",
   },
   {
     title: "Items",
-    link: "/user/orders",
+    link: "/user/order",
   },
   {
     title: "Update",

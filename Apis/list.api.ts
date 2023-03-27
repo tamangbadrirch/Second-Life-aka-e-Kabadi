@@ -13,19 +13,24 @@ const items = {
   save: "/items",
   get: "/items",
   delete: "/items/",
+  getItemBycategory: "/items/category/",
 };
 
 const category = {
   save: "/category",
   get: "/category",
   delete: "/category/",
-  
 };
 const orders = {
   save: "/orders",
   get: "/orders",
   delete: "/orders/",
-  put: "/orders",
-  
+  put: "/orders/",
 };
-export { orders as ordersUrl, employee as employeeUrl, user as userUrl, items as itemsUrl, category as categoryUrl };
+export {
+  orders as ordersUrl,
+  employee as employeeUrl,
+  user as userUrl,
+  items as itemsUrl,
+  category as categoryUrl,
+};
